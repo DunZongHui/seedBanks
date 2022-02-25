@@ -205,7 +205,7 @@ export default {
             );
           }
         } else {
-          console.log("检查输入数据");
+          this.$message.error("请重新核对输入内容")
           return false;
         }
       });

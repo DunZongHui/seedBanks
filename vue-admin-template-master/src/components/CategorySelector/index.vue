@@ -1,7 +1,7 @@
 <template>
-  <el-form :inline="true">
+  <el-form :inline="true" :disabled="!isShow">
     <el-form-item label="一级分类">
-      <el-select placeholder="请选择" v-model="cForm.category1Id" @change="handlerCategory1">
+      <el-select placeholder="请选择" v-model="cForm.category1Id" @change="handlerCategory1" >
         <el-option v-for="c1,index in category1List" :key="c1.id" :label="c1.name" :value="c1.id"></el-option>
       </el-select>
     </el-form-item>
@@ -11,7 +11,7 @@
       </el-select>
     </el-form-item>
     <el-form-item label="三级分类">
-      <el-select placeholder="请选择" v-model="cForm.category3Id" @change="handlerCategory3">
+      <el-select placeholder="请选择" v-model="cForm.category3Id" @change="handlerCategory3" >
         <el-option v-for="c3,index in category3List" :key="c3.id" :label="c3.name" :value="c3.id"></el-option>
       </el-select>
     </el-form-item>
@@ -21,6 +21,7 @@
 <script>
 export default {
   name: "CategorySelector",
+  props: ["isShow"],
   data() {
     return {
       category1List: [],
@@ -37,7 +38,7 @@ export default {
     this.getCategory1List();
   },
   methods: {
-    async getCategory1List() {
+    async getCategory1List() {    
       try {
         const re = await this.$API.CategorySelector.getCategory1();
         if (re.code === 200 || re.code === 20000) {
@@ -88,11 +89,14 @@ export default {
       } catch (e) {
         this.$message.error("请求获取三级列表失败");
       }
-      
     },
     async handlerCategory3(category3Id) {
       //3级目录改变触发
       this.$emit("changeCategory", { categoryId: category3Id, level: 3 });
+    },
+    fn(bloo){
+      console.log(bloo);
+      
     }
   }
 };

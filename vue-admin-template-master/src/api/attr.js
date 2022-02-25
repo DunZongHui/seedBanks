@@ -7,7 +7,7 @@ export default {
     });
   },
   remove(id) {
-    return request.get(`/admin/product/deleteAttr/${id}`);
+    return request.delete(`/admin/product/deleteAttr/${id}`);
   },
   addOrUpdate(attr) {
     return request.post(`/admin/product/saveAttrInfo`,attr);
