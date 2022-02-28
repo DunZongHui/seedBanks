@@ -28,7 +28,8 @@
       </el-form-item>
     </el-form-item>
     <el-form-item label="图片列表">
-      <el-table :data="data" style="width: 100%" border>
+      <!-- @selection-change="handleSelectionChange" -->
+      <el-table :data="data" style="width: 100%" border >
         <el-table-column type="selection" width="55"></el-table-column>
         <el-table-column prop="prop" label="图片" width="width"></el-table-column>
         <el-table-column prop="prop" label="名称" width="width"></el-table-column>
@@ -48,7 +49,8 @@ export default {
   data() {
     return {
       form: {},
-      data: []
+      data: [1,1,1],
+      multipleSelection: []
     };
   }
 };

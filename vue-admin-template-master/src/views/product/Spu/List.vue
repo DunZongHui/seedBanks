@@ -1,11 +1,11 @@
 <template>
   <div>
     <el-card>
-      <CategorySelector @changeCategory="changeCategory" :isShow="!isShowsSpu && !isShowsSku" />
+      <CategorySelector @changeCategory="changeCategory" :isShow="!isShowSpu && !isShowsSku" />
     </el-card>
     <el-card style="margin-top:20px">
       <!-- spu列表 -->
-      <div v-show="!isShowsSpu && !isShowsSku">
+      <div v-show="!isShowSpu && !isShowsSku">
         <el-button
           type="primary"
           icon="el-icon-plus"
@@ -60,16 +60,17 @@
           :page-size="limit"
           :total="total"
           :pager-count="5"
+          :background="true"
           @current-change="getSpuList"
           @size-change="handleSizeChange"
           layout=" prev, pager, next, jumper,->,sizes,total"
         ></el-pagination>
       </div>
       <!-- 添加或修改spu -->
-      <!-- <SpuFrom v-show="isShowsSpu" :isShowsSpu="isShowsSpu"  @update:isShowsSpu = "isShowsSpu=$eventF"/> -->
+      <!-- <SpuFrom v-show="isShowSpu" :isShowSpu="isShowSpu"  @update:isShowSpu = "isShowSpu=$eventF"/> -->
       <SpuFrom
-        v-show="isShowsSpu"
-        :isShowsSpu.sync="isShowsSpu"
+        v-show="isShowSpu"
+        :isShowSpu.sync="isShowSpu"
         ref="spu"
         @backSuccess="backSuccess"
       />
@@ -88,7 +89,7 @@ export default {
   data() {
     return {
       isShowsSku: false,
-      isShowsSpu: false,
+      isShowSpu: false,
       category1Id: "",
       category2Id: "",
       category3Id: "",
@@ -134,14 +135,14 @@ export default {
       this.getSpuList();
     }, //添加spu
     showAddSpuForm() {
-      this.isShowsSpu = true;
+      this.isShowSpu = true;
       this.$refs.spu.getINitAddSpuFormData(this.category3Id);
     }, //添加sku
     showAddSkuForm() {
       this.isShowsSku = true;
     }, //修改spu
     showUpdateSpuForm(row) {
-      this.isShowsSpu = true;
+      this.isShowSpu = true;
       this.$refs.spu.getINitUpdateSpuFormData(row, this.category3Id);
       //子组件开始请求
     },

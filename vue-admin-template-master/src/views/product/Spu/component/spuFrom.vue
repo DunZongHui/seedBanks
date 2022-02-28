@@ -49,7 +49,12 @@
             :key="item.id"
           ></el-option>
         </el-select>
-        <el-button type="primary" icon="el-icon-plus" @click="addSaleAttr" :disabled="!unUseSaleAttrIdName">添加销售属性</el-button>
+        <el-button
+          type="primary"
+          icon="el-icon-plus"
+          @click="addSaleAttr"
+          :disabled="!unUseSaleAttrIdName"
+        >添加销售属性</el-button>
       </el-form-item>
     </el-form>
     <el-table style="width: 100%" :data="spuForm.spuSaleAttrList" border>
@@ -169,9 +174,18 @@ export default {
     },
     async getINitAddSpuFormData(id) {
       this.category3Id = id;
-      const reSpuImg = await this.$API.spu.getSaleAttrList();
-      const retrademark = this.$API.trademark.getList();
-      Promise.all();
+      try {
+        const reSpuAttrList = await this.$API.spu.getSaleAttrList();
+        if (reSpuAttrList.code === 200) {
+          this.saleAttrList = reSpuAttrList.data;
+        }
+        const retrademark = await this.$API.trademark.getList();
+        if (retrademark.code === 200) {
+          this.trademarkList = retrademark.data;
+        }
+      } catch (error) {
+        this.$message.error("添加请求的初始化失败");
+      }
     },
     //添加销售属性
     addSaleAttr() {
@@ -252,9 +266,9 @@ export default {
         //提示
         this.$message.success("保存spu成功");
         //返回到列表页
-        this.$emit("update:isShowsSpu", false);
+        this.$emit("update:isShowSpu", false);
         //通知返回列表页成功，在列表页发请求重新获取列表数据
-        this.$emit("backSuccess",spuForm.id);
+        this.$emit("backSuccess", spuForm.id);
         //返回成功后把当前spuform页面的数据清空
         this.resetData();
       } catch (error) {
@@ -264,18 +278,18 @@ export default {
       }
     },
     //清空data数据
-    resetData(){
+    resetData() {
       //被修改的对象，修改之后的对象（调用生成初始化时对象）
-      Object.assign(this._data,this.options.data())
+      Object.assign(this._data, this.$options.data());
     },
     //点击取消
-    cancel(){
+    cancel() {
       //返回到列表页
-      this.$emit('update:isShowsSpu',false)
+      this.$emit("update:isShowSpu", false);
       //通知父组件回来
-      this.$emit('backSuccess')
+      this.$emit("backSuccess");
       //清空数据
-      this.resetData()
+      this.resetData();
     }
   },
   computed: {
