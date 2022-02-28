@@ -29,5 +29,8 @@ export default {
       url: `/admin/product/baseTrademark/${page}/${limit}`,
       method: "get"
     });
+  },
+  getList(){//品牌列表
+    return request.get('/admin/product/baseTrademark/getTrademarkList')
   }
 };

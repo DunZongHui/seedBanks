@@ -232,6 +232,7 @@ export default {
       });
       if (re) {
         this.$message.error("重复请检查输入内容");
+        row.valueName = "";
         return;
       }
       //将input输入框转为span
