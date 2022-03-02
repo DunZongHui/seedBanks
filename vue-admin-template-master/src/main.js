@@ -15,6 +15,7 @@ import router from "./router";
 import "@/icons"; // icon
 import "@/permission"; // permission control
 import * as API from "@/api/index";
+import {showButton} from "@/utils/Buttonifshow"
 import CategorySelector from "@/components/CategorySelector/"
 import HintButton from "@/components/HintButton/"
 Vue.component("CategorySelector",CategorySelector)
@@ -39,6 +40,7 @@ Vue.use(ElementUI, { locale });
 
 Vue.config.productionTip = false;
 Vue.prototype.$API = API;
+Vue.prototype.$showButton = showButton;
 new Vue({
   el: "#app",
   router, //注入路由

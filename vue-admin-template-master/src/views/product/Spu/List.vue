@@ -16,8 +16,8 @@
           <el-table-column type="index" label="序号" width="80"></el-table-column>
           <el-table-column prop="spuName" label="spu名称" width="width"></el-table-column>
           <el-table-column prop="description" label="spu描述" width="width"></el-table-column>
-          <el-table-column prop="prop" label="操作" width="width">
-            <template slot-scope="{ row, $index }">
+          <el-table-column label="操作" width="width">
+            <template v-slot="{ row, $index }">
               <HintButton
                 type="success"
                 icon="el-icon-plus"
@@ -37,7 +37,7 @@
                 icon="el-icon-info"
                 size="mini"
                 title="查看SPU的SKU列表"
-                @click="showSkuList(row)"
+                @click="showSkuListDiaLog(row)"
               ></HintButton>
               <el-popconfirm :title="`你确定删除${row.spuName}吗？`" @onConfirm="deleteSpu(row)">
                 <HintButton
@@ -68,15 +68,28 @@
       </div>
       <!-- 添加或修改spu -->
       <!-- <SpuFrom v-show="isShowSpu" :isShowSpu="isShowSpu"  @update:isShowSpu = "isShowSpu=$eventF"/> -->
-      <SpuFrom
-        v-show="isShowSpu"
-        :isShowSpu.sync="isShowSpu"
-        ref="spu"
-        @backSuccess="backSuccess"
-      />
+      <SpuFrom v-show="isShowSpu" :isShowSpu.sync="isShowSpu" ref="spu" @backSuccess="backSuccess" />
       <!-- 添加sku -->
-      <SkuFrom v-show="isShowsSku" :isShowsSku.sync="isShowsSku" />
+      <SkuFrom v-show="isShowsSku" :isShowsSku.sync="isShowsSku" ref="sku" />
     </el-card>
+
+    <!-- 查看spu列表 -->
+    <el-dialog
+      :before-close="handlerClose"
+      :title="spu.spuName+ '的sku列表'"
+      :visible.sync="dialogTableVisible"
+    >
+      <el-table v-loading="loading" :data="skuList" width>
+        <el-table-column property="skuName" label="名称" width></el-table-column>
+        <el-table-column property="price" label="价格" width></el-table-column>
+        <el-table-column property="weight" label="重量" width></el-table-column>
+        <el-table-column label="默认图片">
+          <template v-slot="{row,$index}">
+            <img :src="row.skuDefaultImg" style="width:100px;height:100px" />
+          </template>
+        </el-table-column>
+      </el-table>
+    </el-dialog>
   </div>
 </template>
 
@@ -88,6 +101,9 @@ export default {
   components: { SkuFrom, SpuFrom },
   data() {
     return {
+      spu: {},
+      dialogTableVisible: false,
+      loading: false,
       isShowsSku: false,
       isShowSpu: false,
       category1Id: "",
@@ -96,7 +112,8 @@ export default {
       page: 1,
       limit: 2,
       total: 0,
-      spuList: []
+      spuList: [],
+      skuList: []
     };
   },
   methods: {
@@ -118,7 +135,7 @@ export default {
         //发请求拿平台属性的列表数据
         this.getSpuList();
       }
-    }, //请求数据
+    }, //spu请求数据
     async getSpuList(pager = 1) {
       this.page = pager;
       let { page, limit, category3Id } = this;
@@ -129,7 +146,7 @@ export default {
       } else {
         this.$message.error("Spu列表获取失败");
       }
-    }, //页面跳转
+    }, //spu页面跳转
     handleSizeChange(limit) {
       this.limit = limit;
       this.getSpuList();
@@ -137,9 +154,14 @@ export default {
     showAddSpuForm() {
       this.isShowSpu = true;
       this.$refs.spu.getINitAddSpuFormData(this.category3Id);
-    }, //添加sku
-    showAddSkuForm() {
+    }, //添加sku//sku请求数据
+    showAddSkuForm(row) {
       this.isShowsSku = true;
+      this.$refs.sku.getINitUpdateSKuFormData(
+        row,
+        this.category1Id,
+        this.category2Id
+      );
     }, //修改spu
     showUpdateSpuForm(row) {
       this.isShowSpu = true;
@@ -169,6 +191,29 @@ export default {
       } catch (error) {
         this.$message.success("请求删除spu失败");
       }
+    },
+    //查看sku列表
+    async showSkuListDiaLog(row) {
+      this.spu = row;
+      // this.skuList = [];
+      this.dialogTableVisible = true;
+      this.loading = true;
+      try {
+        const re = await this.$API.sku.getListBySpuId(row.id);
+        if (re.code === 200) {
+          this.skuList = re.data;
+          this.loading = false;
+        } else {
+          this.$message.error("请求失败");
+        }
+      } catch (error) {
+        this.$message.error("发送请求失败");
+      }
+    },
+    //关闭时清空当前sku列表
+    handlerClose() {
+      this.skuList = [];
+      this.dialogTableVisible = false;
     }
   }
 };

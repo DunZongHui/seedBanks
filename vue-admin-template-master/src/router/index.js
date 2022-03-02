@@ -30,6 +30,7 @@ import Layout from "@/layout";
  * a base page that does not have permission requirements
  * all roles can be accessed
  */
+//常量路由
 export const constantRoutes = [
   {
     path: "/login",
@@ -55,9 +56,61 @@ export const constantRoutes = [
         meta: { title: "首页", icon: "dashboard" }
       }
     ]
+  }
+
+  // 404 page must be placed at the end !!!
+];
+
+//所有的异步路由
+export const allAsyncRoutes = [
+  //权限数据管理相关的路由
+  {
+    name: "Acl",
+    path: "/acl",
+    component: Layout,
+    redirect: "/acl/user/list",
+    meta: {
+      title: "权限管理",
+      icon: "el-icon-lock"
+    },
+    children: [
+      {
+        name: "User",
+        path: "user/list",
+        component: () => import("@/views/acl/user/list"),
+        meta: {
+          title: "用户管理"
+        }
+      },
+      {
+        name: "Role",
+        path: "role/list",
+        component: () => import("@/views/acl/role/list"),
+        meta: {
+          title: "角色管理"
+        }
+      },
+      {
+        name: "RoleAuth",
+        path: "role/auth/:id",
+        component: () => import("@/views/acl/role/roleAuth"),
+        meta: {
+          activeMenu: "/acl/role/list",
+          title: "角色授权"
+        },
+        hidden: true
+      },
+      {
+        name: "Permission",
+        path: "permission/list",
+        component: () => import("@/views/acl/permission/list"),
+        meta: {
+          title: "菜单管理"
+        }
+      }
+    ]
   },
   {
-    //////////////
     path: "/product",
     component: Layout,
     name: "Product",
@@ -89,9 +142,29 @@ export const constantRoutes = [
       }
     ]
   },
-  // 404 page must be placed at the end !!!
-  { path: "*", redirect: "/404", hidden: true }
+  {
+    path: "/dtest",
+    component: Layout,
+    name: "dtest",
+    meta: { title: "测试", icon: "el-icon-s-goods" },
+    children: [
+      {
+        path: "/dtest1",
+        name: "dtest1",
+        component: () => import("@/views/dtest/dtest1"),
+        meta: { title: "测试1" }
+      },
+      {
+        path: "/dtest2",
+        name: "dtest2",
+        component: () => import("@/views/dtest/dtest1"),
+        meta: { title: "测试2" }
+      },
+    ]
+  }
 ];
+//404路由
+export const anyRoute = { path: "*", redirect: "/404", hidden: true };
 
 const createRouter = () =>
   new Router({
