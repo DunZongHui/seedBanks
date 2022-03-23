@@ -20,6 +20,13 @@ import CategorySelector from "@/components/CategorySelector/"
 import HintButton from "@/components/HintButton/"
 Vue.component("CategorySelector",CategorySelector)
 Vue.component("HintButton",HintButton)
+
+import '@/plugins/acharts'
+import '@/styles/echarts.css'
+import '@/mock'//mock接口
+import '@/utils/filters/index'//引入过滤器
+import CommCard from "@/components/CommCard"
+Vue.component("CommCard",CommCard)
 /**
  * If you don't want to use mock-server
  * you want to use MockJs for mock api

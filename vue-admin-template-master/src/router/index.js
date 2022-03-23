@@ -169,7 +169,7 @@ export const anyRoute = { path: "*", redirect: "/404", hidden: true };
 const createRouter = () =>
   new Router({
     // mode: 'history', // require service support
-    scrollBehavior: () => ({ y: 0 }),
+    scrollBehavior: () => ({ y: 0 }),//路由跳转后页面显示的所在位置
     routes: constantRoutes
   });
 
@@ -178,7 +178,7 @@ const router = createRouter();
 // Detail see: https://github.com/vuejs/vue-router/issues/1234#issuecomment-357941465
 export function resetRouter() {
   const newRouter = createRouter();
-  router.matcher = newRouter.matcher; // reset router
+  router.matcher = newRouter.matcher; // reset router 重置路由清空权限
 }
 
 export default router;

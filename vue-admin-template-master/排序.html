@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body></body>
+
+  <script>
+    // var arr = ["C南区", "A北区", "D南区", "A西区", "B东区"];
+    // // let newarr = [[[],[],[],[]],[[],[],[],[]],[[],[],[],[]],[[],[],[],[]]];
+
+    // let newarr = arr.map(item => {
+    //   let num = 0;
+
+    //   if (item.slice(0, 1) === "A") {
+    //     num += 40;
+    //   } else if (item.slice(0, 1) === "B") {
+    //     num += 30;
+    //   } else if (item.slice(0, 1) === "C") {
+    //     num += 20;
+    //   } else {
+    //     num += 10;
+    //   }
+    //   if (item.slice(1, 2) === "东") {
+    //     num += 4;
+    //   } else if (item.slice(1, 2) === "南") {
+    //     num += 3;
+    //   } else if (item.slice(1, 2) === "西") {
+    //     num += 2;
+    //   } else {
+    //     num += 1;
+    //   }
+
+    //   return[item,num];
+    // });
+    // newarr.sort((a, b) => {
+    //     return b[1] - a[1];
+    // });
+    // newarr = newarr.map(item=>{return item[0]})
+    // console.log(newarr);
+
+	//快排
+    /*let arr = [2, 4, 5, 7, 4, 3, 2];
+    function fastrow(arr) {
+      let smallarr = [];
+      let bigarr = [];
+      let ele = arr[0];
+      if (arr.length <= 1) {
+        return arr;
+      }
+      for (let i = 1; i < arr.length; i++) {
+        arr[i] > ele ? bigarr.push(arr[i]) : smallarr.push(arr[i]);
+      }
+      return [...fastrow(smallarr), ele, ...fastrow(bigarr)];
+    }
+    let newarr = fastrow(arr);
+    console.log(newarr);*/
+	
+	//手写call
+	/*Function.prototype.Mycall(fn,..rest){
+	fn = fn??window
+	if(typeof fn !== "function" && typeof fn !== "object"){
+		fn = Object(fn)
+	}
+	let fnn = Symbol("fnn")
+	fn[fnn] = this
+	const re =  fn[fnn](...rest)
+	delete fn[fnn]
+	return re */
+}
+  </script>
+</html>
